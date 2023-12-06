@@ -7,7 +7,7 @@ public class AIMove : MonoBehaviour
 {
     [SerializeField, Range(0f, 10f)] private float speed = 2.5f;
     [SerializeField, Range(3f, 20f)] private float detectionDistance = 5f;
-    [SerializeField] HealthController healthController;
+    [SerializeField] private HealthController healthController;
 
     public Transform player;
     public bool attackMode = false;
@@ -22,6 +22,7 @@ public class AIMove : MonoBehaviour
     private bool facingRight = true;
     private bool awareOfPlayer = false;
     private bool dead = false;
+    private CapsuleCollider2D damageCollider;
 
     private float distance = 100000f;
 
@@ -31,6 +32,7 @@ public class AIMove : MonoBehaviour
         ground = GetComponent<Ground>();
         animator = GetComponent<Animator>();
         healthController = GetComponent<HealthController>();
+        damageCollider = GetComponentInChildren<CapsuleCollider2D>();
         Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), player.GetComponent<BoxCollider2D>());
         foreach (var collider in GetComponentsInChildren<PolygonCollider2D>())
             Physics2D.IgnoreCollision(collider, player.GetComponent<BoxCollider2D>());
@@ -77,7 +79,7 @@ public class AIMove : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && !damageCollider.IsTouching(collision))
         {
             animator.SetBool("Attack", false);
             attackMode = false;

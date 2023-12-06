@@ -39,9 +39,15 @@ public class HealthController : MonoBehaviour
 
     public void DealDamage(int damage)
     {
-        health -= health > damage ? damage : health;
-        healthBar.UpdateHealthBar(health, maxHealth);
-        if (health <= 0) Die();
+        if (!dead)
+        {
+            health -= health > damage ? damage : health;
+            healthBar.UpdateHealthBar(health, maxHealth);
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
     }
 
     private void Die()

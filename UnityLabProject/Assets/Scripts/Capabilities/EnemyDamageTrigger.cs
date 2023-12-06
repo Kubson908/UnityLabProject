@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyDamageTrigger : MonoBehaviour
 {
     public Transform root;
+    [SerializeField] private int damagePoints = 1;
 
     private AIMove parentMove;
     private bool damage = false;
@@ -17,9 +18,10 @@ public class EnemyDamageTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && parentMove.attackMode && damage)
+        if (collision.gameObject.CompareTag("Player") && parentMove.attackMode && damage)
         {
             Debug.Log("Hit");
+            GameManager.Instance.HurtPlayer(damagePoints);
         }
     }
 

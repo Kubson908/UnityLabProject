@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class LookAtCursor : MonoBehaviour
 {
+    [SerializeField] private PlayerHealthController healthController;
     public Transform weaponTransform;
     public Transform headTransform;
     public Transform upperSpineTransform;
@@ -10,17 +11,27 @@ public class LookAtCursor : MonoBehaviour
     private new Camera camera;
     public bool facingRight = true;
     private Quaternion startSpineRotation;
+    private Quaternion startingWeaponRotation;
     // Start is called before the first frame update
     void Start()
     {
         camera = Camera.main;
         startSpineRotation = upperSpineTransform.rotation;
+        startingWeaponRotation = weaponTransform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
-        FaceMouse();
+        if (!healthController.dead)
+            FaceMouse();
+        else
+        {
+            if (facingRight)
+                weaponTransform.rotation = startingWeaponRotation;
+            /*else*/
+                // dorobiæ 
+        }
     }
 
     private void FaceMouse()
