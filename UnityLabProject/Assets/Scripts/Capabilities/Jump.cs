@@ -11,6 +11,7 @@ public class Jump : MonoBehaviour
     [SerializeField, Range(0f, 5f)] private float upwardMovementMultiplier = 1.7f;
 
     private Rigidbody2D body;
+    private Animator animator;
     private Ground ground;
     private Vector2 velocity;
 
@@ -24,6 +25,7 @@ public class Jump : MonoBehaviour
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         ground = GetComponent<Ground>();
 
         defaultGravityScale = 1f;
@@ -40,28 +42,36 @@ public class Jump : MonoBehaviour
         onGround = ground.GetOnGround();
         velocity = body.velocity;
 
-        if(onGround )
+        if(onGround)
         {
             jumpPhase = 0;
         }
 
-        if (desiredJump)
-        {
-            desiredJump = false;
-            JumpAction();
-        }
+       
 
         if(body.velocity.y > 0)
         {
             body.gravityScale = upwardMovementMultiplier;
+            if (animator.GetFloat("yVelocity") < 0) animator.SetFloat("yVelocity", 1);
+            if (animator.GetBool("Jump")) animator.SetBool("Jump", false);
         }
         else if (body.velocity.y < 0)
         {
             body.gravityScale = downwardMovementMultiplier;
+            if (animator.GetFloat("yVelocity") > 0) animator.SetFloat("yVelocity", -1);
+            if (animator.GetBool("Jump")) animator.SetBool("Jump", false);
         }
         else
         {
             body.gravityScale = defaultGravityScale;
+            animator.SetFloat("yVelocity", 0);
+            animator.SetBool("IsGrounded", true);
+
+        }
+        if (desiredJump)
+        {
+            desiredJump = false;
+            JumpAction();
         }
 
         body.velocity = velocity;
@@ -78,6 +88,11 @@ public class Jump : MonoBehaviour
                 jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
             }
             velocity.y += jumpSpeed;
+            if (!animator.GetBool("Jump"))
+            {
+                animator.SetBool("Jump", true);
+                animator.SetBool("IsGrounded", false);
+            }
         }
     }
 }

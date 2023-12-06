@@ -66,7 +66,7 @@ AnimationClip:
     - time: 0
       value: {fileID: 7082151082315275787, guid: cb0a10a0e4300774ba19def56dd0fdbe, type: 3}
     attribute: m_Sprite
-    path: Sprites/RightCalve
+    path: Sprites/RightCalf
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -96,7 +96,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2440955829
+      path: 146162281
       attribute: 0
       script: {fileID: 0}
       typeID: 212
