@@ -3,10 +3,15 @@ using UnityEngine;
 public class HealthController : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] FloatingHealthBar healthBar;
+
+    public bool dead = false;
+
     private int health;
     private Rigidbody2D rb;
+    private CapsuleCollider2D attackTrigger;
 
-    [SerializeField] FloatingHealthBar healthBar;
+    
 
     private void Awake()
     {
@@ -14,6 +19,7 @@ public class HealthController : MonoBehaviour
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         healthBar.UpdateHealthBar(health, maxHealth);
         rb = GetComponent<Rigidbody2D>();
+        attackTrigger = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -28,12 +34,10 @@ public class HealthController : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = 0f;
-            int damage = collision.collider.GetComponent<Bullet>().damage;
-            DealDamage(damage);
         }
     }
 
-    private void DealDamage(int damage)
+    public void DealDamage(int damage)
     {
         health -= health > damage ? damage : health;
         healthBar.UpdateHealthBar(health, maxHealth);
@@ -42,6 +46,9 @@ public class HealthController : MonoBehaviour
 
     private void Die()
     {
-
+        attackTrigger.enabled = false;
+        dead = true;
+        Destroy(healthBar.gameObject, 1);
+        Destroy(rb.gameObject, 5);
     }
 }

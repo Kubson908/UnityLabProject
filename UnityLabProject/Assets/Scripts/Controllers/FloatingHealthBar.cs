@@ -23,6 +23,6 @@ public class FloatingHealthBar : MonoBehaviour
     void Update()
     {
         transform.rotation = camera.transform.rotation;
-        transform.position = target.position + new Vector3(0.1f, 2.85f, 0);
+        transform.position = target.position + new Vector3(0, 2.85f, 0);
     }
 }

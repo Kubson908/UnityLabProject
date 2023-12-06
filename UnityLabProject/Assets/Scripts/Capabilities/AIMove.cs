@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AIMove : MonoBehaviour
 {
-    [SerializeField, Range(0f, 10f)] private float speed = 1.5f;
-    [SerializeField, Range(3f, 20f)] private float detectionDistance = 10f;
+    [SerializeField, Range(0f, 10f)] private float speed = 2.5f;
+    [SerializeField, Range(3f, 20f)] private float detectionDistance = 5f;
+    [SerializeField] HealthController healthController;
 
     public Transform player;
+    public bool attackMode = false;
 
     private Vector2 direction;
     private Vector2 desiredVelocity;
@@ -18,17 +21,19 @@ public class AIMove : MonoBehaviour
     private bool onGround;
     private bool facingRight = true;
     private bool awareOfPlayer = false;
+    private bool dead = false;
 
-    private float distance;
+    private float distance = 100000f;
 
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         ground = GetComponent<Ground>();
         animator = GetComponent<Animator>();
+        healthController = GetComponent<HealthController>();
         Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), player.GetComponent<BoxCollider2D>());
-        Physics2D.IgnoreCollision(GetComponent<EdgeCollider2D>(), player.GetComponent<BoxCollider2D>());
-        Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(), player.GetComponent<BoxCollider2D>());
+        foreach (var collider in GetComponentsInChildren<PolygonCollider2D>())
+            Physics2D.IgnoreCollision(collider, player.GetComponent<BoxCollider2D>());
     }
 
     void Update()
@@ -36,19 +41,46 @@ public class AIMove : MonoBehaviour
 
         distance = Vector2.Distance(transform.position, player.position);
         direction = (player.transform.position - transform.position).normalized;
+        animator.SetFloat("WalkSpeed", Mathf.Abs(body.velocity.x));
         desiredVelocity = new Vector2(direction.x * Mathf.Max(speed - ground.GetFriction()), 0f);
+        if (healthController.dead && !dead)
+        {
+            attackMode = false;
+            body.velocity = Vector2.zero;
+            animator.SetBool("Attack", false);
+            animator.SetTrigger("Death");
+            dead = true;
+        }
     }
 
     private void FixedUpdate()
     {
         onGround = ground.GetOnGround();
-        if (distance < detectionDistance || awareOfPlayer)
+        if ((distance < detectionDistance || awareOfPlayer) && !healthController.dead)
         {
             if (direction.x < 0 && facingRight) Flip();
             if (direction.x > 0 && !facingRight) Flip();
             velocity = body.velocity;
-            velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, 1f);
+            velocity.x = Mathf.MoveTowards(velocity.x, direction.x < 0 ? desiredVelocity.x + 0.7f : desiredVelocity.x - 0.7f, 1f);
             body.velocity = velocity;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && !healthController.dead)
+        {
+            animator.SetBool("Attack", true);
+            attackMode = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            animator.SetBool("Attack", false);
+            attackMode = false;
         }
     }
 
@@ -69,4 +101,5 @@ public class AIMove : MonoBehaviour
 
         transform.localScale = scale;
     }
+
 }
