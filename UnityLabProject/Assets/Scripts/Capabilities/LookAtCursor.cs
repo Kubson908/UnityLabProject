@@ -27,10 +27,8 @@ public class LookAtCursor : MonoBehaviour
             FaceMouse();
         else
         {
-            if (facingRight)
-                weaponTransform.rotation = startingWeaponRotation;
-            /*else*/
-                // dorobiæ 
+            weaponTransform.rotation = Quaternion.identity;
+            upperSpineTransform.rotation = Quaternion.identity;
         }
     }
 

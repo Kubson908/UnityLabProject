@@ -66,11 +66,16 @@ public class AIMove : MonoBehaviour
             velocity.x = Mathf.MoveTowards(velocity.x, direction.x < 0 ? desiredVelocity.x + 0.7f : desiredVelocity.x - 0.7f, 1f);
             body.velocity = velocity;
         }
+        if (GameManager.Instance.currentHealth <= 0 && attackMode)
+        {
+            attackMode = false;
+            animator.SetBool("Attack", false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !healthController.dead)
+        if (collision.tag == "Player" && !healthController.dead && GameManager.Instance.currentHealth > 0)
         {
             animator.SetBool("Attack", true);
             attackMode = true;
