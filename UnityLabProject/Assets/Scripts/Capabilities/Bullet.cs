@@ -30,12 +30,20 @@ public class Bullet : MonoBehaviour
         {
             Debug.Log("Headshot");
             HealthController controller = collision.collider.gameObject.transform.root.GetComponent<HealthController>();
-            controller.DealDamage(headDamage);
+            try 
+            {
+                controller.DealDamage(headDamage);
+            } catch { }
         }
         else if (collision.collider.GetType() == typeof(PolygonCollider2D))
         {
             HealthController controller = collision.collider.gameObject.transform.root.GetComponent<HealthController>();
-            controller.DealDamage(damage);
+            try
+            {
+                controller.DealDamage(damage);
+            }
+            catch { }
+            
         }
         Destroy(gameObject);
     }

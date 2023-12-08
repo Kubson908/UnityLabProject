@@ -14,4 +14,9 @@ public class PlayerWeaponController : WeaponController
     {
         return Input.GetMouseButtonUp(0);
     }
+
+    public override bool RetrieveReloadClick()
+    {
+        return Input.GetKeyDown(KeyCode.R);
+    }
 }

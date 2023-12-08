@@ -35,9 +35,19 @@ public class LookAtCursor : MonoBehaviour
     private void FaceMouse()
     {
         Vector2 mouseWorldPos = camera.ScreenToWorldPoint(Input.mousePosition);
-        if (Vector2.Distance(mouseWorldPos, weaponTransform.position) < 0.35f) return;
+        if (Vector2.Distance(mouseWorldPos, weaponTransform.position) < 0.35f || 
+            (mouseWorldPos.y < weaponTransform.position.y && Mathf.Abs(weaponTransform.position.x - mouseWorldPos.x) < 0.20f )) return;
 
-        Vector2 direction = new(weaponTransform.position.x - mouseWorldPos.x, weaponTransform.position.y - mouseWorldPos.y);
+        Vector2 direction = new(weaponTransform.position.x - mouseWorldPos.x, weaponTransform.position.y - mouseWorldPos.y); 
+        
+        if (mouseWorldPos.x <= weaponTransform.position.x && facingRight)
+        {
+            Flip();
+        }
+        else if (mouseWorldPos.x >= weaponTransform.position.x && !facingRight)
+        {
+            Flip();
+        }
 
         targetTransform.rotation = headTransform.rotation;
         targetTransform.up = direction;
@@ -58,14 +68,6 @@ public class LookAtCursor : MonoBehaviour
                 upperSpineTransform.rotation = new Quaternion(0, 0, -startSpineRotation.z - diff / 2, upperSpineTransform.rotation.w);
         }
         weaponTransform.up = direction;
-        if (mouseWorldPos.x < transform.position.x && facingRight)
-        {
-            Flip();
-        }
-        else if (mouseWorldPos.x > transform.position.x && !facingRight)
-        {
-            Flip();
-        }
     }
 
     private void Flip()

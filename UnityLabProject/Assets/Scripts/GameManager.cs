@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour
     public int currentHealth = 100;
     [SerializeField] PlayerHealthController healthController;
 
+    [Header("Ammo")]
+    public int capacity = 30;
+    public int magazine;
+    public int totalAmmo = 90;
+
     [Header("Game Status")]
     public static GameManager Instance;
 
@@ -17,6 +22,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+        magazine = capacity;
     }
 
     // Start is called before the first frame update

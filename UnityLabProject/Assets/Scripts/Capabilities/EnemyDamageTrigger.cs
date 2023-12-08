@@ -6,6 +6,8 @@ public class EnemyDamageTrigger : MonoBehaviour
 {
     public Transform root;
     [SerializeField] private int damagePoints = 1;
+    [SerializeField] private float minDistance = 1.7f;
+    [SerializeField] private float maxDistance = 2.7f;
 
     private AIMove parentMove;
     private bool damage = false;
@@ -22,6 +24,7 @@ public class EnemyDamageTrigger : MonoBehaviour
         {
             Debug.Log("Hit");
             GameManager.Instance.HurtPlayer(damagePoints);
+            damage = false;
         }
     }
 
@@ -29,7 +32,13 @@ public class EnemyDamageTrigger : MonoBehaviour
     void Update()
     {
         float distance = Vector2.Distance(root.position, transform.position);
-        if (distance < 1.7f) damage = false;
-        else if (distance > 2.7f) damage = true;
+        if (distance < minDistance)
+        {
+            damage = false;
+        }
+        else if (distance > maxDistance)
+        {
+            damage = true;
+        }
     }
 }

@@ -6,4 +6,5 @@ public abstract class WeaponController : ScriptableObject
 {
     public abstract bool RetrieveLeftClick();
     public abstract bool RetrieveLeftRelease();
+    public abstract bool RetrieveReloadClick();
 }

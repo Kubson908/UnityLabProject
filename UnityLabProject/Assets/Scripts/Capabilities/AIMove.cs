@@ -6,12 +6,14 @@ using UnityEngine;
 public class AIMove : MonoBehaviour
 {
     [SerializeField, Range(0f, 10f)] private float speed = 2.5f;
+    [SerializeField] private float maxDelta = 1f;
     [SerializeField, Range(3f, 20f)] private float detectionDistance = 5f;
-    [SerializeField] private HealthController healthController;
+    [SerializeField] private float stopDistance = 0.7f;
 
     public Transform player;
     public bool attackMode = false;
 
+    private HealthController healthController;
     private Vector2 direction;
     private Vector2 desiredVelocity;
     private Vector2 velocity;
@@ -22,7 +24,7 @@ public class AIMove : MonoBehaviour
     private bool facingRight = true;
     private bool awareOfPlayer = false;
     private bool dead = false;
-    private CapsuleCollider2D damageCollider;
+    private CapsuleCollider2D attackTrigger;
 
     private float distance = 100000f;
 
@@ -32,10 +34,11 @@ public class AIMove : MonoBehaviour
         ground = GetComponent<Ground>();
         animator = GetComponent<Animator>();
         healthController = GetComponent<HealthController>();
-        damageCollider = GetComponentInChildren<CapsuleCollider2D>();
+        attackTrigger = GetComponent<CapsuleCollider2D>();
         Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), player.GetComponent<BoxCollider2D>());
         foreach (var collider in GetComponentsInChildren<PolygonCollider2D>())
             Physics2D.IgnoreCollision(collider, player.GetComponent<BoxCollider2D>());
+        if (transform.localScale.x < 0) facingRight = false;
     }
 
     void Update()
@@ -63,10 +66,10 @@ public class AIMove : MonoBehaviour
             if (direction.x < 0 && facingRight) Flip();
             if (direction.x > 0 && !facingRight) Flip();
             velocity = body.velocity;
-            velocity.x = Mathf.MoveTowards(velocity.x, direction.x < 0 ? desiredVelocity.x + 0.7f : desiredVelocity.x - 0.7f, 1f);
+            velocity.x = Mathf.MoveTowards(velocity.x, direction.x < 0 ? desiredVelocity.x + stopDistance : desiredVelocity.x - stopDistance, maxDelta);
             body.velocity = velocity;
         }
-        if (GameManager.Instance.currentHealth <= 0 && attackMode)
+        if (GameManager.Instance && GameManager.Instance.currentHealth <= 0 && attackMode)
         {
             attackMode = false;
             animator.SetBool("Attack", false);
@@ -84,7 +87,7 @@ public class AIMove : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !damageCollider.IsTouching(collision))
+        if (collision.tag == "Player" && !attackTrigger.bounds.Intersects(collision.bounds))
         {
             animator.SetBool("Attack", false);
             attackMode = false;
