@@ -47,7 +47,7 @@ public class AIMove : MonoBehaviour
         distance = Vector2.Distance(transform.position, player.position);
         direction = (player.transform.position - transform.position).normalized;
         animator.SetFloat("WalkSpeed", Mathf.Abs(body.velocity.x));
-        desiredVelocity = new Vector2(direction.x * Mathf.Max(speed - ground.GetFriction()), 0f);
+        desiredVelocity = new Vector2(direction.x * Mathf.Max(speed/* - ground.GetFriction()*/), 0f);
         if (healthController.dead && !dead)
         {
             attackMode = false;

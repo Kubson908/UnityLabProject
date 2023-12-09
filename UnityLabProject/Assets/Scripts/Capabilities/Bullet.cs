@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] private GameObject bulletImpact;
     public float speed = 20f;
     public Rigidbody2D rb;
     public int damage = 40;
@@ -45,6 +46,7 @@ public class Bullet : MonoBehaviour
             catch { }
             
         }
+        if (collision.gameObject.layer != 7) Destroy(Instantiate(bulletImpact, transform.position, Quaternion.identity), 0.4f);
         Destroy(gameObject);
     }
 }

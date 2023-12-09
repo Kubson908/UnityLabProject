@@ -37,7 +37,7 @@ public class Move : MonoBehaviour
         animator.SetFloat("WalkSpeed", Mathf.Abs(direction.x));
         if (look.facingRight) animator.SetInteger("Direction", (int)direction.x);
         else animator.SetInteger("Direction", -(int)direction.x);
-        desiredVelocity = new Vector2(direction.x * Mathf.Max(maxSpeed - ground.GetFriction()), 0f);
+        desiredVelocity = new Vector2(direction.x * Mathf.Max(maxSpeed/* - ground.GetFriction()*/), 0f);
         if (healthController.dead && !dead)
         {
             body.velocity = Vector2.zero;
