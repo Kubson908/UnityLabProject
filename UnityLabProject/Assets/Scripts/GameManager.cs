@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("Health")]
     public int maxHealth = 100;
     public int currentHealth = 100;
-    [SerializeField] PlayerHealthController healthController;
+    [SerializeField] Slider healthBar;
 
     [Header("Ammo")]
     public int pistolCapacity = 8;
@@ -34,9 +35,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] Attack rifleAttackController;
     [SerializeField] Attack pistolAttackController;
+    public bool canChangeWeapon = false;
 
     [Header("Game Status")]
     public static GameManager Instance;
+
+    private PlayerHealthController playerPistolHealthController;
+    private PlayerHealthController playerAK47HealthController;
 
     private void Awake()
     {
@@ -47,6 +52,8 @@ public class GameManager : MonoBehaviour
         if (eliteEnemiesLeft == 0) eliteEnemiesCounter.gameObject.SetActive(false);
         enemiesCounter.text = enemiesLeft.ToString();
         eliteEnemiesCounter.text = eliteEnemiesLeft.ToString();
+        playerPistolHealthController = playerPistol.GetComponent<PlayerHealthController>();
+        playerAK47HealthController = playerAK47.GetComponent<PlayerHealthController>();
     }
 
     // Start is called before the first frame update
@@ -71,18 +78,23 @@ public class GameManager : MonoBehaviour
         /*if (currentHealth >= maxHealth) currentHealth = maxHealth;
         else if (currentHealth <= maxHealth) currentHealth = maxHealth;*/
 
-        healthController.UpdateHealthBar(currentHealth, maxHealth);
+        UpdateHealthBar(currentHealth, maxHealth);
+    }
+
+    public void UpdateHealthBar(int currentValue, float maxValue)
+    {
+        healthBar.value = currentValue / maxValue;
     }
 
     public void ChangeWeapon(bool rifle)
     {
-        if ((pistolAttackController && pistolAttackController.isFiring) ||
+        if (!canChangeWeapon || (pistolAttackController && pistolAttackController.isFiring) ||
             (rifleAttackController && rifleAttackController.isFiring)) return;
         var pistolAnimator = playerPistol.GetComponent<Animator>();
         var rifleAnimator = playerAK47.GetComponent<Animator>();
         if (rifle)
         {
-            if (pistolAnimator.GetBool("ReloadingPistol") ||
+            if ((pistolAnimator.isActiveAndEnabled && pistolAnimator.GetBool("ReloadingPistol")) ||
                 rifleAnimator.GetBool("ReloadingRifle")) return;
             playerAK47.transform.position = playerPistol.transform.position;
             playerPistol.SetActive(false);
@@ -92,7 +104,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (rifleAnimator.GetBool("ReloadingRifle") || 
+            if ((rifleAnimator.isActiveAndEnabled && rifleAnimator.GetBool("ReloadingRifle")) || 
                 pistolAnimator.GetBool("ReloadingPistol")) return;
             playerPistol.transform.position = playerAK47.transform.position;
             playerPistol.SetActive(true);
@@ -113,6 +125,9 @@ public class GameManager : MonoBehaviour
     {
         currentHealth -= currentHealth > damage ? damage : currentHealth;
         if (currentHealth <= 0)
-            healthController.Die();
+        {
+            if (rifle) playerAK47HealthController.Die();
+            else playerPistolHealthController.Die();
+        }
     }
 }

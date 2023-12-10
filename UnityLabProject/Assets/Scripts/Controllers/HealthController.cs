@@ -57,6 +57,8 @@ public class HealthController : MonoBehaviour
         if (weapon != null) weapon.Detach();
         attackTrigger.enabled = false;
         dead = true;
+        gameObject.layer = 11;
+        foreach (Transform obj in gameObject.GetComponentsInChildren<Transform>()) obj.gameObject.layer = 11;
         if (gameObject.tag == "EliteEnemy") manager.eliteEnemiesLeft--;
         else manager.enemiesLeft--;
         manager.UpdateEnemiesCounter(gameObject.tag == "EliteEnemy");

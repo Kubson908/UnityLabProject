@@ -7,8 +7,10 @@ public class CollectWeapon : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            GameManager.Instance.canChangeWeapon = true; 
             GameManager.Instance.ChangeWeapon(true);
             Destroy(gameObject);
+            Destroy(this);
         }
     }
 }

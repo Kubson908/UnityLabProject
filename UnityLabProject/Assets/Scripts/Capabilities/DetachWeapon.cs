@@ -13,8 +13,8 @@ public class DetachWeapon : MonoBehaviour
         rb = weapon.AddComponent<Rigidbody2D>();
         rb.mass = 50;
         weapon.AddComponent<PolygonCollider2D>();
-        Destroy(weapon.GetComponent<EnemyDamageTrigger>());
-        Debug.Log(weapon);
+        var trigger = weapon.GetComponent<EnemyDamageTrigger>();
+        if (trigger != null ) Destroy(trigger);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

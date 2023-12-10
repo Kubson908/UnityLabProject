@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIMove : MonoBehaviour
@@ -10,7 +8,8 @@ public class AIMove : MonoBehaviour
     [SerializeField, Range(3f, 20f)] private float detectionDistance = 5f;
     [SerializeField] private float stopDistance = 0.7f;
 
-    public Transform player;
+    public Transform playerAK47;
+    public Transform playerPistol;
     public bool attackMode = false;
 
     private HealthController healthController;
@@ -26,7 +25,8 @@ public class AIMove : MonoBehaviour
     private bool dead = false;
     private CapsuleCollider2D attackTrigger;
 
-    private float distance = 100000f;
+    private float distanceAK47 = 100000f;
+    private float distancePistol = 100000f;
 
     void Awake()
     {
@@ -35,17 +35,24 @@ public class AIMove : MonoBehaviour
         animator = GetComponent<Animator>();
         healthController = GetComponent<HealthController>();
         attackTrigger = GetComponent<CapsuleCollider2D>();
-        Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), player.GetComponent<BoxCollider2D>());
+       /* Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), playerAK47.GetComponent<BoxCollider2D>());
+        Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), playerPistol.GetComponent<BoxCollider2D>());
         foreach (var collider in GetComponentsInChildren<PolygonCollider2D>())
-            Physics2D.IgnoreCollision(collider, player.GetComponent<BoxCollider2D>());
+        {
+            Physics2D.IgnoreCollision(collider, playerAK47.GetComponent<BoxCollider2D>());
+            Physics2D.IgnoreCollision(collider, playerPistol.GetComponent<BoxCollider2D>());
+        }*/
+            
         if (transform.localScale.x < 0) facingRight = false;
     }
 
     void Update()
     {
 
-        distance = Vector2.Distance(transform.position, player.position);
-        direction = (player.transform.position - transform.position).normalized;
+        distanceAK47 = Vector2.Distance(transform.position, playerAK47.position);
+        distancePistol = Vector2.Distance(transform.position, playerPistol.position);
+        if (!GameManager.Instance.rifle) direction = (playerPistol.transform.position - transform.position).normalized;
+        else direction = (playerAK47.transform.position - transform.position).normalized;
         animator.SetFloat("WalkSpeed", Mathf.Abs(body.velocity.x));
         desiredVelocity = new Vector2(direction.x * Mathf.Max(speed/* - ground.GetFriction()*/), 0f);
         if (healthController.dead && !dead)
@@ -61,7 +68,7 @@ public class AIMove : MonoBehaviour
     private void FixedUpdate()
     {
         onGround = ground.GetOnGround();
-        if ((distance < detectionDistance || awareOfPlayer) && !healthController.dead)
+        if ((distanceAK47 < detectionDistance || distancePistol < detectionDistance || awareOfPlayer) && !healthController.dead)
         {
             if (direction.x < 0 && facingRight) Flip();
             if (direction.x > 0 && !facingRight) Flip();

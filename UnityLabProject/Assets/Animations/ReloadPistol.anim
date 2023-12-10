@@ -38,8 +38,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -118,8 +117,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
   m_PositionCurves:
   - curve:
       serializedVersion: 2
@@ -145,8 +144,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -225,8 +223,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -238,7 +236,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3183867428
+      path: 3447524430
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -247,7 +245,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 3183867428
+      path: 3447524430
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -256,7 +254,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1665986631
+      path: 233147464
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -265,7 +263,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1665986631
+      path: 233147464
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -321,8 +319,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -352,8 +349,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -383,8 +379,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -414,8 +409,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -445,8 +439,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -476,8 +469,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -561,8 +553,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -646,8 +638,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -731,8 +723,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -762,8 +754,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -802,8 +794,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -887,8 +879,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -901,8 +893,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -914,8 +905,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -927,8 +917,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Left
-      Arm/LeftArmSolver_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Left Arm/LeftArmSolver_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -940,8 +929,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -953,8 +942,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -966,8 +955,8 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Pistol/Right
-      Arm/Right Arm_Target
+    path: RootBone/LowerSpine/UpperSpine/HandsAndPistol/PistolTransform/Right Arm/Right
+      Arm_Target
     classID: 4
     script: {fileID: 0}
     flags: 0

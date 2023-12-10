@@ -22,8 +22,14 @@ public class EnemyDamageTrigger : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && parentMove.attackMode && damage)
         {
-            Debug.Log("Hit");
-            GameManager.Instance.HurtPlayer(damagePoints);
+            Debug.Log("Damage: " + damagePoints);
+            try
+            {
+                GameManager.Instance.HurtPlayer(damagePoints);
+
+            }
+            catch { }
+            
             damage = false;
         }
     }

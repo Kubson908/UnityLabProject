@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LookAtCursor : MonoBehaviour
 {
-    [SerializeField] private PlayerHealthController healthController;
     public Transform weaponTransform;
     public Transform headTransform;
     public Transform upperSpineTransform;
@@ -23,7 +22,7 @@ public class LookAtCursor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!healthController.dead)
+        if (GameManager.Instance.currentHealth > 0)
             FaceMouse();
         else
         {

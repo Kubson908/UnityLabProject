@@ -7,7 +7,6 @@ public class Move : MonoBehaviour
     [SerializeField, Range(0f, 100f)] private float maxSpeed = 4f;
     [SerializeField, Range(0f, 100f)] private float maxAcceleration = 35f;
     [SerializeField, Range(0f, 100f)] private float maxAirAcceleration = 20f;
-    [SerializeField] private PlayerHealthController healthController;
 
     private Vector2 direction;
     private Vector2 desiredVelocity;
@@ -38,7 +37,7 @@ public class Move : MonoBehaviour
         if (look.facingRight) animator.SetInteger("Direction", (int)direction.x);
         else animator.SetInteger("Direction", -(int)direction.x);
         desiredVelocity = new Vector2(direction.x * Mathf.Max(maxSpeed/* - ground.GetFriction()*/), 0f);
-        if (healthController.dead && !dead)
+        if (GameManager.Instance.currentHealth <= 0 && !dead)
         {
             body.velocity = Vector2.zero;
             animator.SetTrigger("Death");
@@ -48,7 +47,7 @@ public class Move : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!healthController.dead)
+        if (!dead)
         {   
             onGround = ground.GetOnGround();
             animator.SetBool("IsGrounded", onGround);
