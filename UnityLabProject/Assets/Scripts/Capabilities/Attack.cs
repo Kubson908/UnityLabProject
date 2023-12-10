@@ -10,8 +10,6 @@ public class Attack : MonoBehaviour
     [SerializeField] private AudioClip noAmmo;
     [SerializeField] private Text ammoDisplay;
     [SerializeField] private float reloadTime;
-    [SerializeField] private int magCapacity = 30;
-    [SerializeField] private int totalAmmo = 90;
     [SerializeField] private GameObject mag;
     [SerializeField] private GameObject magPrefab;
     [SerializeField] private Animator playerAnimator;
@@ -22,7 +20,7 @@ public class Attack : MonoBehaviour
     public GameObject bulletPrefab;
 
     private AudioSource audioSource;
-    private bool isFiring;
+    public bool isFiring;
     private float timeCounter;
     private Animator weaponAnimator;
     private GameManager manager;
@@ -34,18 +32,31 @@ public class Attack : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        weaponAnimator = gameObject.transform.parent.gameObject.GetComponent<Animator>();
         manager = GameManager.Instance;
-        manager.capacity = magCapacity;
-        manager.magazine = magCapacity;
-        manager.totalAmmo = totalAmmo;
+        weaponAnimator = gameObject.transform.parent.gameObject.GetComponent<Animator>();
+        /*if (manager.riffle)
+        {
+            manager.rifleCapacity = magCapacity;
+            manager.rifleMagazine = magCapacity;
+            manager.rifleTotalAmmo = totalAmmo;
+            ammoDisplay.text = manager.rifleMagazine + "/" + manager.rifleTotalAmmo;
+        }
+        else
+        {
+            manager.pistolCapacity = magCapacity;
+            manager.pistolMagazine = magCapacity;
+            manager.pistolTotalAmmo = totalAmmo;
+        }*/
         look = transform.root.GetComponent<LookAtCursor>();
-        ammoDisplay.text = manager.magazine + "/" + manager.totalAmmo;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        {
+            
+        }
         if (isReloading) return;
 
         if (weapon.RetrieveReloadClick())
@@ -86,13 +97,25 @@ public class Attack : MonoBehaviour
 
     private void Shoot()
     {
-        if (manager.magazine != 0)
+        if (!manager.rifle && manager.pistolMagazine != 0)
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             audioSource.PlayOneShot(audioSource.clip);
-            manager.magazine--;
-            ammoDisplay.text = manager.magazine + "/" + manager.totalAmmo;
-            weaponAnimator.SetTrigger(fullAuto ? "IsFiring" : "ShootPistol");
+            manager.pistolMagazine--;
+            ammoDisplay.text = manager.pistolMagazine + "/" + manager.pistolTotalAmmo;
+            weaponAnimator.SetTrigger("ShootPistol");
+            if (!fullAuto)
+            {
+                isFiring = false;
+            }
+        }
+        else if (manager.rifle && manager.rifleMagazine != 0)
+        {
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            audioSource.PlayOneShot(audioSource.clip);
+            manager.rifleMagazine--;
+            ammoDisplay.text = manager.rifleMagazine + "/" + manager.rifleTotalAmmo;
+            weaponAnimator.SetTrigger("IsFiring");
             if (!fullAuto)
             {
                 isFiring = false;
@@ -111,19 +134,28 @@ public class Attack : MonoBehaviour
         isReloading = true;
         isFiring = false;
         /*weaponAnimator.SetBool("IsFiring", false);*/
-        if (manager.totalAmmo == 0 || manager.magazine == manager.capacity)
+        if (CheckAmmo())
         {
             isReloading = false;
         }
         else
         {
             audioSource.PlayOneShot(reload);
-            playerAnimator.SetBool(fullAuto ? "IsReloading" : "ReloadingPistol", true);
+            if (!manager.rifle)
+            {
+                playerAnimator.SetBool("ReloadingRifle", false);
+                playerAnimator.SetBool("ReloadingPistol", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("ReloadingPistol", false);
+                playerAnimator.SetBool("ReloadingRifle", true);
+            }
             mag.SetActive(false);
             GameObject dropMag = Instantiate(magPrefab, mag.transform.position, mag.transform.rotation, null);
             dropMag.transform.localScale *= look.facingRight ? 0.1f : -0.1f;
-            /*if (!look.facingRight)
-                dropMag.transform.Rotate(new Vector3(0, 0, -66f));*/
+            if (!look.facingRight && manager.rifle)
+                dropMag.transform.Rotate(new Vector3(0, 0, -66f));
             Destroy(dropMag, 10);
             yield return new WaitForSeconds(0.5f);
             GameObject newMag = Instantiate(magPrefab, hand.transform.position, hand.rotation, hand);
@@ -134,12 +166,40 @@ public class Attack : MonoBehaviour
             Destroy(newMag);
             mag.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.5831f);
-            int diff = manager.capacity - manager.magazine;
-            manager.magazine += diff <= manager.totalAmmo ? diff : manager.totalAmmo; ;
-            manager.totalAmmo -= diff <= manager.totalAmmo ? diff : manager.totalAmmo;
-            ammoDisplay.text = manager.magazine + "/" + manager.totalAmmo;
+            ManageReloadAmmo();
             isReloading = false;
-            playerAnimator.SetBool(fullAuto ? "IsReloading" : "ReloadingPistol", false);
+            if (!manager.rifle) playerAnimator.SetBool("ReloadingPistol", false);
+            else playerAnimator.SetBool("ReloadingRifle", false);
+        }
+    }
+
+    private bool CheckAmmo()
+    {
+        if (manager.rifle)
+        {
+            return manager.rifleTotalAmmo == 0 || manager.rifleMagazine == manager.rifleCapacity;
+        }
+        else
+        {
+            return manager.pistolTotalAmmo == 0 || manager.pistolMagazine == manager.pistolCapacity;
+        }
+    }
+
+    private void ManageReloadAmmo()
+    {
+        if (manager.rifle)
+        {
+            int diff = manager.rifleCapacity - manager.rifleMagazine;
+            manager.rifleMagazine += diff <= manager.rifleTotalAmmo ? diff : manager.rifleTotalAmmo; ;
+            manager.rifleTotalAmmo -= diff <= manager.rifleTotalAmmo ? diff : manager.rifleTotalAmmo;
+            ammoDisplay.text = manager.rifleMagazine + "/" + manager.rifleTotalAmmo;
+        }
+        else
+        {
+            int diff = manager.pistolCapacity - manager.pistolMagazine;
+            manager.pistolMagazine += diff <= manager.pistolTotalAmmo ? diff : manager.pistolTotalAmmo; ;
+            manager.pistolTotalAmmo -= diff <= manager.pistolTotalAmmo ? diff : manager.pistolTotalAmmo;
+            ammoDisplay.text = manager.pistolMagazine + "/" + manager.pistolTotalAmmo;
         }
     }
 }

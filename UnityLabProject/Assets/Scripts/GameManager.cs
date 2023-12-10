@@ -1,5 +1,7 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +13,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerHealthController healthController;
 
     [Header("Ammo")]
-    public int capacity;
-    public int magazine;
-    public int totalAmmo;
+    public int pistolCapacity = 8;
+    public int pistolMagazine = 8;
+    public int pistolTotalAmmo = 40;
+    public int rifleCapacity = 30;
+    public int rifleMagazine = 30;
+    public int rifleTotalAmmo = 90;
+    public bool rifle = false;
+    [SerializeField] Text ammoInfo;
+
+    [Header("Enemies")]
+    [SerializeField] private Text enemiesCounter;
+    [SerializeField] private Text eliteEnemiesCounter;
+    public int enemiesLeft = 0;
+    public int eliteEnemiesLeft = 0;
+
+    [Header("PlayerConfig")]
+    [SerializeField] GameObject playerAK47;
+    [SerializeField] GameObject playerPistol;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] Attack rifleAttackController;
+    [SerializeField] Attack pistolAttackController;
 
     [Header("Game Status")]
     public static GameManager Instance;
@@ -22,18 +42,28 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+        enemiesLeft = GameObject.FindGameObjectsWithTag("Enemy").Count();
+        eliteEnemiesLeft = GameObject.FindGameObjectsWithTag("EliteEnemy").Count();
+        if (eliteEnemiesLeft == 0) eliteEnemiesCounter.gameObject.SetActive(false);
+        enemiesCounter.text = enemiesLeft.ToString();
+        eliteEnemiesCounter.text = eliteEnemiesLeft.ToString();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        ammoInfo.text = rifle ? rifleMagazine + "/" + rifleTotalAmmo : pistolMagazine + "/" + pistolTotalAmmo;
     }
 
     // Update is called once per frame
     void Update()
     {
         DisplayHP();
+        if (Input.GetKeyDown(KeyCode.Alpha1) && rifle)
+            ChangeWeapon(false);
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !rifle)
+            ChangeWeapon(true);
     }
 
     void DisplayHP()
@@ -42,6 +72,41 @@ public class GameManager : MonoBehaviour
         else if (currentHealth <= maxHealth) currentHealth = maxHealth;*/
 
         healthController.UpdateHealthBar(currentHealth, maxHealth);
+    }
+
+    public void ChangeWeapon(bool rifle)
+    {
+        if ((pistolAttackController && pistolAttackController.isFiring) ||
+            (rifleAttackController && rifleAttackController.isFiring)) return;
+        var pistolAnimator = playerPistol.GetComponent<Animator>();
+        var rifleAnimator = playerAK47.GetComponent<Animator>();
+        if (rifle)
+        {
+            if (pistolAnimator.GetBool("ReloadingPistol") ||
+                rifleAnimator.GetBool("ReloadingRifle")) return;
+            playerAK47.transform.position = playerPistol.transform.position;
+            playerPistol.SetActive(false);
+            playerAK47.SetActive(true);
+            virtualCamera.Follow = playerAK47.transform;
+            ammoInfo.text = rifleMagazine + "/" + rifleTotalAmmo;
+        }
+        else
+        {
+            if (rifleAnimator.GetBool("ReloadingRifle") || 
+                pistolAnimator.GetBool("ReloadingPistol")) return;
+            playerPistol.transform.position = playerAK47.transform.position;
+            playerPistol.SetActive(true);
+            playerAK47.SetActive(false);
+            virtualCamera.Follow = playerPistol.transform;
+            ammoInfo.text = pistolMagazine + "/" + pistolTotalAmmo;
+        }
+        this.rifle = rifle;
+    }
+
+    public void UpdateEnemiesCounter(bool elite)
+    {
+        if (elite) eliteEnemiesCounter.text = eliteEnemiesLeft.ToString();
+        else enemiesCounter.text = enemiesLeft.ToString();
     }
 
     public void HurtPlayer(int damage)

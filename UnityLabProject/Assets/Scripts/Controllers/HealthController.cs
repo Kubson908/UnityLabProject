@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class HealthController : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D attackTrigger;
 
-    
+    private GameManager manager;
 
     private void Awake()
     {
@@ -21,6 +22,11 @@ public class HealthController : MonoBehaviour
         healthBar.UpdateHealthBar(health, maxHealth);
         rb = GetComponent<Rigidbody2D>();
         attackTrigger = GetComponent<CapsuleCollider2D>();
+    }
+
+    private void Start()
+    {
+        manager = GameManager.Instance;
     }
 
 
@@ -51,6 +57,10 @@ public class HealthController : MonoBehaviour
         if (weapon != null) weapon.Detach();
         attackTrigger.enabled = false;
         dead = true;
+        if (gameObject.tag == "EliteEnemy") manager.eliteEnemiesLeft--;
+        else manager.enemiesLeft--;
+        manager.UpdateEnemiesCounter(gameObject.tag == "EliteEnemy");
+        Debug.Log("Kill");
         Destroy(healthBar.gameObject, 1);
         Destroy(rb.gameObject, 5);
     }

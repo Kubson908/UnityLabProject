@@ -21,7 +21,6 @@ public class DetachWeapon : MonoBehaviour
     {
         if (collision.collider.tag == "Bullet" && weapon.parent == null)
         {
-            Debug.Log("sdfdsf");
             rb.velocity = Vector3.zero;
             rb.angularVelocity = 0f;
         }

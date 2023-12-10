@@ -7,18 +7,38 @@ using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
+    [SerializeField] private GameObject playButtons;
+    [SerializeField] private GameObject mainButtons;
+
     // Start is called before the first frame update
     void Start()
     {
     }
 
-    void OnMouseUp()
+    public void Play()
     {
-        Clicked();
+        playButtons.SetActive(true);
+        mainButtons.SetActive(false);
     }
 
-    public void Clicked()
+    public void Back()
+    {
+        playButtons.SetActive(false);
+        mainButtons.SetActive(true);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void EasyLevel()
     {
         SceneManager.LoadScene(1);
+    }
+    
+    public void HardLevel()
+    {
+        SceneManager.LoadScene(2);
     }
 }
