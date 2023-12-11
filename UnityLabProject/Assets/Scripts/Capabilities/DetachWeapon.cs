@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+// skrypt od³¹czaj¹cy broñ od postaci wykorzystywany przy jej œmierci
 public class DetachWeapon : MonoBehaviour
 {
     [SerializeField] private Transform weapon;

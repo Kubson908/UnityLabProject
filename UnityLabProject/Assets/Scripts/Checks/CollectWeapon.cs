@@ -1,6 +1,6 @@
-
 using UnityEngine;
 
+// skrypt obs³uguj¹cy zbieranie broni
 public class CollectWeapon : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)

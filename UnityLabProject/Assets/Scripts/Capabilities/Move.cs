@@ -32,12 +32,13 @@ public class Move : MonoBehaviour
 
     void Update()
     {
-        direction.x = input.RetrieveMoveInput();
+        direction.x = input.RetrieveMoveInput();    // sprawdzamy kierunek ruchu
         animator.SetFloat("WalkSpeed", Mathf.Abs(direction.x));
+        // ustawienie kierunku poruszania siê w animatorze w celu uruchomienia odpowiednio animacji ruchu do przodu lub do ty³u
         if (look.facingRight) animator.SetInteger("Direction", (int)direction.x);
         else animator.SetInteger("Direction", -(int)direction.x);
-        desiredVelocity = new Vector2(direction.x * Mathf.Max(maxSpeed/* - ground.GetFriction()*/), 0f);
-        if (GameManager.Instance.currentHealth <= 0 && !dead)
+        desiredVelocity = new Vector2(direction.x * Mathf.Max(maxSpeed/* - ground.GetFriction()*/), 0f);    // ustawienie docelowej prêdkoœci ruchu
+        if (GameManager.Instance.currentHealth <= 0 && !dead)   // wy³¹czenie ruchu w przypadku œmierci postaci
         {
             body.velocity = Vector2.zero;
             animator.SetTrigger("Death");
@@ -49,10 +50,10 @@ public class Move : MonoBehaviour
     {
         if (!dead)
         {   
-            onGround = ground.GetOnGround();
+            onGround = ground.GetOnGround();    // sprawdzamy czy postaæ stoi na ziemi
             animator.SetBool("IsGrounded", onGround);
             velocity = body.velocity;
-
+            // obliczenie wektora prêdkoœci postaci
             acceleration = onGround ? maxAcceleration : maxAirAcceleration;
             maxSpeedChange = acceleration * Time.deltaTime;
             velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);

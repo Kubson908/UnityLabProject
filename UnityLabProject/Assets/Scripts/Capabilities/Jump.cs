@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Jump : MonoBehaviour
@@ -34,12 +32,12 @@ public class Jump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        desiredJump |= input.RetrieveJumpInput();
+        desiredJump = input.RetrieveJumpInput();
     }
 
     private void FixedUpdate()
     {
-        onGround = ground.GetOnGround();
+        onGround = ground.GetOnGround();    // sprawdzamy czy postaæ stoi na ziemi
         velocity = body.velocity;
 
         if(onGround)
@@ -51,19 +49,19 @@ public class Jump : MonoBehaviour
 
         if(body.velocity.y > 0)
         {
-            body.gravityScale = upwardMovementMultiplier;
+            body.gravityScale = upwardMovementMultiplier;   // ustawiamy grawitacjê dla postaci do ruchu w górê
             if (animator.GetFloat("yVelocity") < 0) animator.SetFloat("yVelocity", 1);
             if (animator.GetBool("Jump")) animator.SetBool("Jump", false);
         }
         else if (body.velocity.y < 0)
         {
-            body.gravityScale = downwardMovementMultiplier;
+            body.gravityScale = downwardMovementMultiplier; // ustawiamy grawitacjê dla postaci do ruchu w dó³
             if (animator.GetFloat("yVelocity") > 0) animator.SetFloat("yVelocity", -1);
             if (animator.GetBool("Jump")) animator.SetBool("Jump", false);
         }
         else
         {
-            body.gravityScale = defaultGravityScale;
+            body.gravityScale = defaultGravityScale;    // ustawiamy domyœln¹ grawitacjê gdy prêdkoœæ wyniesie 0
             animator.SetFloat("yVelocity", 0);
             animator.SetBool("IsGrounded", true);
 
@@ -71,7 +69,7 @@ public class Jump : MonoBehaviour
         if (desiredJump)
         {
             desiredJump = false;
-            JumpAction();
+            JumpAction();   // wywo³ujemy funkcjê skoku
         }
 
         body.velocity = velocity;
@@ -79,15 +77,15 @@ public class Jump : MonoBehaviour
 
     private void JumpAction()
     {
-        if (onGround || jumpPhase < maxAirJumps)
+        if (onGround || jumpPhase < maxAirJumps)    // sprawdzamy czy postaæ jest na ziemi lub czy mo¿e jeszcze wykonaæ skok w powietrzu
         {
             jumpPhase++;
-            float jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * jumpHeight);
+            float jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * jumpHeight);   // obliczamy prêdkoœæ skoku
             if (velocity.y > 0f)
             {
                 jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
             }
-            velocity.y += jumpSpeed;
+            velocity.y += jumpSpeed;    // nadajemy postaci prêdkoœæ skierowan¹ w górê
             if (!animator.GetBool("Jump"))
             {
                 animator.SetBool("Jump", true);

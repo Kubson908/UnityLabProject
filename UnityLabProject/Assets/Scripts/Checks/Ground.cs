@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+// skrypt obs³uguj¹cy sprawdzanie czy obiekt jest na ziemi
 public class Ground : MonoBehaviour
 {
     private bool onGround;

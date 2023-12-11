@@ -2,26 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+// skrypt obs³uguj¹cy strzelanie z broni postaci
 public class Attack : MonoBehaviour
 {
     [SerializeField] private WeaponController weapon = null;
-    [SerializeField] private float shootDelay = 0.13f;
-    [SerializeField] private bool fullAuto = true;
-    [SerializeField] private AudioClip noAmmo;
+    [SerializeField] private float shootDelay = 0.13f; // opóŸnienie miêdzy kolejnymi strza³ami
+    [SerializeField] private bool fullAuto = true;  // tryb strzelania full-auto
+    [SerializeField] private AudioClip noAmmo; // dŸwiêk pustego magazynka
     [SerializeField] private Text ammoDisplay;
-    [SerializeField] private float reloadTime;
+    [SerializeField] private float reloadTime;  // czas prze³adowania
     [SerializeField] private GameObject mag;
     [SerializeField] private GameObject magPrefab;
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private AudioClip reload;
+    [SerializeField] private AudioClip reload;  // dŸwiêk prze³adowania
     [SerializeField] private Transform hand;
 
-    public Transform firePoint;
+    public Transform firePoint; // punkt w którym inicjalizujemy pocisk
     public GameObject bulletPrefab;
 
     private AudioSource audioSource;
     public bool isFiring;
-    private float timeCounter;
+    private float timeCounter; // licznik czasu miêdzy wystrza³ami
     private Animator weaponAnimator;
     private GameManager manager;
     private bool isReloading = false;
@@ -34,56 +35,37 @@ public class Attack : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         manager = GameManager.Instance;
         weaponAnimator = gameObject.transform.parent.gameObject.GetComponent<Animator>();
-        /*if (manager.riffle)
-        {
-            manager.rifleCapacity = magCapacity;
-            manager.rifleMagazine = magCapacity;
-            manager.rifleTotalAmmo = totalAmmo;
-            ammoDisplay.text = manager.rifleMagazine + "/" + manager.rifleTotalAmmo;
-        }
-        else
-        {
-            manager.pistolCapacity = magCapacity;
-            manager.pistolMagazine = magCapacity;
-            manager.pistolTotalAmmo = totalAmmo;
-        }*/
         look = transform.root.GetComponent<LookAtCursor>();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        {
-            
-        }
         if (isReloading) return;
 
         if (weapon.RetrieveReloadClick())
         {
-            StartCoroutine(Reload());
+            StartCoroutine(Reload());   // uruchomienie procesu prze³adowania
             return;
         }
 
         if (weapon.RetrieveLeftClick() && manager.currentHealth > 0)
         {
             isFiring = true;
-            /*weaponAnimator.SetBool("IsFiring", manager.magazine != 0 ? true : false);*/
         }
         else if (weapon.RetrieveLeftRelease())
         {
             isFiring = false;
-            /*weaponAnimator.SetBool("IsFiring", false);*/
         }
 
-        if (isFiring)
+        if (isFiring)   // je¿eli postaæ jest w trakcie strzelania
         {
             timeCounter -= Time.deltaTime;
 
-            if (timeCounter <= 0)
+            if (timeCounter <= 0)   // sprawdzamy czy minê³o opuŸnienie wystrza³u
             {
                 timeCounter = shootDelay;
-                Shoot();
+                Shoot();    // strza³
             }
         }
         else
@@ -97,8 +79,8 @@ public class Attack : MonoBehaviour
 
     private void Shoot()
     {
-        if (manager.paused) return;
-        if (!manager.rifle && manager.pistolMagazine != 0)
+        if (manager.paused) return; // je¿eli gra jest zapauzowana nie ma mo¿liwoœci strzelania
+        if (!manager.rifle && manager.pistolMagazine != 0)  // gdy u¿ywamy pistoletu z niepustym magazynkiem
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             audioSource.PlayOneShot(audioSource.clip);
@@ -107,10 +89,10 @@ public class Attack : MonoBehaviour
             weaponAnimator.SetTrigger("ShootPistol");
             if (!fullAuto)
             {
-                isFiring = false;
+                isFiring = false;   // je¿eli tryb full-auto jest wy³¹czony przerywamy strzelanie po pierwszym wystrzale
             }
         }
-        else if (manager.rifle && manager.rifleMagazine != 0)
+        else if (manager.rifle && manager.rifleMagazine != 0)   // karabin z niepustym magazynkiem
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             audioSource.PlayOneShot(audioSource.clip);
@@ -119,30 +101,28 @@ public class Attack : MonoBehaviour
             weaponAnimator.SetTrigger("IsFiring");
             if (!fullAuto)
             {
-                isFiring = false;
+                isFiring = false;   // je¿eli tryb full-auto jest wy³¹czony przerywamy strzelanie po pierwszym wystrzale
             }
         }
         else
         {
-            audioSource.PlayOneShot(noAmmo);
-/*            weaponAnimator.SetBool("IsFiring", false);*/
+            audioSource.PlayOneShot(noAmmo);    // gdy nie ma pocisków w magazynku puszczamy dŸwiêk pustego magazynka
         }
-        
     }
 
     private IEnumerator Reload()
     {
-        if (manager.paused) yield return null;
+        if (manager.paused) yield return null;  // je¿eli gra jest zapauzowana nie ma mo¿liwoœci prze³adowania
         isReloading = true;
         isFiring = false;
-        /*weaponAnimator.SetBool("IsFiring", false);*/
-        if (CheckAmmo())
+        if (NoAmmo())    // jeœli brak amunicji wy³¹czamy prze³adowanie
         {
             isReloading = false;
         }
         else
         {
-            audioSource.PlayOneShot(reload);
+            audioSource.PlayOneShot(reload);    // dŸwiêk prze³adowania
+            // ustawienie odpowiednich animacji
             if (!manager.rifle)
             {
                 playerAnimator.SetBool("ReloadingRifle", false);
@@ -153,6 +133,7 @@ public class Attack : MonoBehaviour
                 playerAnimator.SetBool("ReloadingPistol", false);
                 playerAnimator.SetBool("ReloadingRifle", true);
             }
+            // dodatkowe obliczenia i ustawienia od³¹czania magazynka i wk³adania nowego podczas trwania animacji
             mag.SetActive(false);
             GameObject dropMag = Instantiate(magPrefab, mag.transform.position, mag.transform.rotation, null);
             dropMag.transform.localScale *= look.facingRight ? 0.1f : -0.1f;
@@ -168,14 +149,14 @@ public class Attack : MonoBehaviour
             Destroy(newMag);
             mag.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.5831f);
-            ManageReloadAmmo();
+            ManageReloadAmmo(); // zarz¹dzanie iloœci¹ amunicji w Game Manager oraz wyœwietlanie informacji na ekranie
             isReloading = false;
             if (!manager.rifle) playerAnimator.SetBool("ReloadingPistol", false);
             else playerAnimator.SetBool("ReloadingRifle", false);
         }
     }
 
-    private bool CheckAmmo()
+    private bool NoAmmo()
     {
         if (manager.rifle)
         {
