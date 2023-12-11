@@ -70,6 +70,7 @@ public class AIMove : MonoBehaviour
         onGround = ground.GetOnGround();
         if ((distanceAK47 < detectionDistance || distancePistol < detectionDistance || awareOfPlayer) && !healthController.dead)
         {
+            awareOfPlayer = true;
             if (direction.x < 0 && facingRight) Flip();
             if (direction.x > 0 && !facingRight) Flip();
             velocity = body.velocity;

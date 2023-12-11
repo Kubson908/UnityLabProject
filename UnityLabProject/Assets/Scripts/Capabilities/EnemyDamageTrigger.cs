@@ -33,6 +33,7 @@ public class EnemyDamageTrigger : MonoBehaviour
             catch { }
             
             damage = false;
+            audioSource.Play();
         }
     }
 
@@ -47,7 +48,6 @@ public class EnemyDamageTrigger : MonoBehaviour
         else if (distance > maxDistance)
         {
             damage = true;
-            audioSource.Play();
         }
     }
 }

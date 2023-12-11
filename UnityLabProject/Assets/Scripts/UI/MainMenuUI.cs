@@ -4,23 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] private GameObject playButtons;
     [SerializeField] private GameObject settingsButtons;
     [SerializeField] private GameObject mainButtons;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         StartCoroutine(FadeVolume());
     }
 
     public void Play()
     {
-        playButtons.SetActive(true);
-        mainButtons.SetActive(false);
+        SceneManager.LoadScene(1);
     }
 
     public void Settings()
@@ -31,7 +28,6 @@ public class MainMenuUI : MonoBehaviour
 
     public void Back()
     {
-        playButtons.SetActive(false);
         settingsButtons.SetActive(false);
         mainButtons.SetActive(true);
     }
@@ -62,15 +58,5 @@ public class MainMenuUI : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
-    }
-
-    public void EasyLevel()
-    {
-        SceneManager.LoadScene(1);
-    }
-    
-    public void HardLevel()
-    {
-        SceneManager.LoadScene(2);
     }
 }

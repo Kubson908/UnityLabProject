@@ -9,7 +9,7 @@ public class PauseUI : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        StartCoroutine(FadeVolume());
+        if (audioSource) StartCoroutine(FadeVolume());
     }
 
     IEnumerator FadeVolume()
@@ -39,5 +39,12 @@ public class PauseUI : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(0);
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1.0f;
+        gameObject.SetActive(false);
+        GameManager.Instance.paused = false;
     }
 }

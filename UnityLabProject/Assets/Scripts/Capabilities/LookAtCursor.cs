@@ -22,9 +22,9 @@ public class LookAtCursor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.currentHealth > 0)
+        if (GameManager.Instance.currentHealth > 0 && !GameManager.Instance.paused)
             FaceMouse();
-        else
+        else if (!GameManager.Instance.paused)
         {
             weaponTransform.rotation = Quaternion.identity;
             upperSpineTransform.rotation = Quaternion.identity;

@@ -97,6 +97,7 @@ public class Attack : MonoBehaviour
 
     private void Shoot()
     {
+        if (manager.paused) return;
         if (!manager.rifle && manager.pistolMagazine != 0)
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
@@ -131,6 +132,7 @@ public class Attack : MonoBehaviour
 
     private IEnumerator Reload()
     {
+        if (manager.paused) yield return null;
         isReloading = true;
         isFiring = false;
         /*weaponAnimator.SetBool("IsFiring", false);*/

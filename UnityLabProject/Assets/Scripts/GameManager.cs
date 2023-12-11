@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public int rifleTotalAmmo = 90;
     public bool rifle = false;
     [SerializeField] Text ammoInfo;
+    [SerializeField] Image weaponIcon;
+    [SerializeField] Sprite AK47Icon;
+    [SerializeField] Sprite pistolIcon;
 
     [Header("Enemies")]
     [SerializeField] private Text enemiesCounter;
@@ -39,6 +42,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Status")]
     [SerializeField] GameObject gameOverUI;
     [SerializeField] GameObject levelCompletedUI;
+    [SerializeField] GameObject pauseMenu;
+    public bool paused = false;
     public static GameManager Instance;
 
     private PlayerHealthController playerPistolHealthController;
@@ -75,6 +80,8 @@ public class GameManager : MonoBehaviour
 
         if (MagazineEmpty() && enemiesLeft != 0 && eliteEnemiesLeft != 0) StartCoroutine(GameOver());
         else if (enemiesLeft == 0 && eliteEnemiesLeft == 0) StartCoroutine(LevelCompleted());
+
+        if (Input.GetKeyDown(KeyCode.Escape)) Pause();
     }
 
     private bool MagazineEmpty()
@@ -107,6 +114,7 @@ public class GameManager : MonoBehaviour
             playerAK47.transform.position = playerPistol.transform.position;
             playerPistol.SetActive(false);
             playerAK47.SetActive(true);
+            weaponIcon.sprite = AK47Icon;
             virtualCamera.Follow = playerAK47.transform;
             ammoInfo.text = rifleMagazine + "/" + rifleTotalAmmo;
         }
@@ -117,6 +125,7 @@ public class GameManager : MonoBehaviour
             playerPistol.transform.position = playerAK47.transform.position;
             playerPistol.SetActive(true);
             playerAK47.SetActive(false);
+            weaponIcon.sprite = pistolIcon;
             virtualCamera.Follow = playerPistol.transform;
             ammoInfo.text = pistolMagazine + "/" + pistolTotalAmmo;
         }
@@ -138,6 +147,13 @@ public class GameManager : MonoBehaviour
             else playerPistolHealthController.Die();
             StartCoroutine(GameOver());
         }
+    }
+
+    private void Pause()
+    {
+        paused = !paused;
+        pauseMenu.SetActive(paused);
+        Time.timeScale = paused ? 0 : 1;
     }
 
     private IEnumerator GameOver()
