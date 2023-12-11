@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
             catch { }
             
         }
-        if (collision.gameObject.layer != 7) Destroy(Instantiate(bulletImpact, transform.position, Quaternion.identity), 0.4f);
+        if (collision.gameObject.layer != 7 && collision.gameObject.layer != 11) Destroy(Instantiate(bulletImpact, transform.position, Quaternion.identity), 0.4f);
         Destroy(gameObject);
     }
 }

@@ -11,11 +11,13 @@ public class EnemyDamageTrigger : MonoBehaviour
 
     private AIMove parentMove;
     private bool damage = false;
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         root = transform.root.transform;
         parentMove = transform.root.GetComponent<AIMove>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,6 +47,7 @@ public class EnemyDamageTrigger : MonoBehaviour
         else if (distance > maxDistance)
         {
             damage = true;
+            audioSource.Play();
         }
     }
 }

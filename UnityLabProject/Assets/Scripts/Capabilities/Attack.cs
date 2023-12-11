@@ -190,14 +190,14 @@ public class Attack : MonoBehaviour
         if (manager.rifle)
         {
             int diff = manager.rifleCapacity - manager.rifleMagazine;
-            manager.rifleMagazine += diff <= manager.rifleTotalAmmo ? diff : manager.rifleTotalAmmo; ;
+            manager.rifleMagazine += diff <= manager.rifleTotalAmmo ? diff : manager.rifleTotalAmmo;
             manager.rifleTotalAmmo -= diff <= manager.rifleTotalAmmo ? diff : manager.rifleTotalAmmo;
             ammoDisplay.text = manager.rifleMagazine + "/" + manager.rifleTotalAmmo;
         }
         else
         {
             int diff = manager.pistolCapacity - manager.pistolMagazine;
-            manager.pistolMagazine += diff <= manager.pistolTotalAmmo ? diff : manager.pistolTotalAmmo; ;
+            manager.pistolMagazine += diff <= manager.pistolTotalAmmo ? diff : manager.pistolTotalAmmo;
             manager.pistolTotalAmmo -= diff <= manager.pistolTotalAmmo ? diff : manager.pistolTotalAmmo;
             ammoDisplay.text = manager.pistolMagazine + "/" + manager.pistolTotalAmmo;
         }

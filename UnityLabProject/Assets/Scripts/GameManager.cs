@@ -1,6 +1,5 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -38,6 +37,8 @@ public class GameManager : MonoBehaviour
     public bool canChangeWeapon = false;
 
     [Header("Game Status")]
+    [SerializeField] GameObject gameOverUI;
+    [SerializeField] GameObject levelCompletedUI;
     public static GameManager Instance;
 
     private PlayerHealthController playerPistolHealthController;
@@ -71,13 +72,20 @@ public class GameManager : MonoBehaviour
             ChangeWeapon(false);
         if (Input.GetKeyDown(KeyCode.Alpha2) && !rifle)
             ChangeWeapon(true);
+
+        if (MagazineEmpty() && enemiesLeft != 0 && eliteEnemiesLeft != 0) StartCoroutine(GameOver());
+        else if (enemiesLeft == 0 && eliteEnemiesLeft == 0) StartCoroutine(LevelCompleted());
+    }
+
+    private bool MagazineEmpty()
+    {
+        bool noAmmo = pistolMagazine == 0 && pistolTotalAmmo == 0;
+        if (canChangeWeapon) noAmmo &= rifleMagazine == 0 && rifleTotalAmmo == 0;
+        return noAmmo;
     }
 
     void DisplayHP()
     {
-        /*if (currentHealth >= maxHealth) currentHealth = maxHealth;
-        else if (currentHealth <= maxHealth) currentHealth = maxHealth;*/
-
         UpdateHealthBar(currentHealth, maxHealth);
     }
 
@@ -128,6 +136,27 @@ public class GameManager : MonoBehaviour
         {
             if (rifle) playerAK47HealthController.Die();
             else playerPistolHealthController.Die();
+            StartCoroutine(GameOver());
         }
+    }
+
+    private IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(3);
+        playerAK47.GetComponent<LookAtCursor>().gameObject.SetActive(false);
+        playerPistol.GetComponent<LookAtCursor>().gameObject.SetActive(false);
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    private IEnumerator LevelCompleted()
+    {
+        yield return new WaitForSeconds(3);
+        playerAK47.GetComponent<LookAtCursor>().gameObject.SetActive(false);
+        playerAK47.GetComponentInChildren<Attack>().gameObject.SetActive(false);
+        playerPistol.GetComponent<LookAtCursor>().gameObject.SetActive(false);
+        playerPistol.GetComponentInChildren<Attack>().gameObject.SetActive(false);
+        levelCompletedUI.SetActive(true);
+        Time.timeScale = 0;
     }
 }
