@@ -12,6 +12,7 @@ public class MainMenuUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         StartCoroutine(FadeVolume());
     }
 

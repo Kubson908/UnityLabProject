@@ -15,6 +15,7 @@ public class DetachWeapon : MonoBehaviour
         weapon.AddComponent<PolygonCollider2D>();
         var trigger = weapon.GetComponent<EnemyDamageTrigger>();
         if (trigger != null ) Destroy(trigger);
+        Destroy(weapon.gameObject, 5);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

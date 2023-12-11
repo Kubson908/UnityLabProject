@@ -1,7 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LookAtCursor : MonoBehaviour
 {
+    [SerializeField] Texture2D cursor;
     public Transform weaponTransform;
     public Transform headTransform;
     public Transform upperSpineTransform;
@@ -17,6 +19,7 @@ public class LookAtCursor : MonoBehaviour
         camera = Camera.main;
         startSpineRotation = upperSpineTransform.rotation;
         startingWeaponRotation = weaponTransform.rotation;
+        Cursor.SetCursor(cursor, new Vector2(32, 32), CursorMode.Auto);
     }
 
     // Update is called once per frame
