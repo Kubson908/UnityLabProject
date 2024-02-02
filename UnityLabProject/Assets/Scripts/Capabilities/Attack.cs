@@ -62,7 +62,7 @@ public class Attack : MonoBehaviour
         {
             timeCounter -= Time.deltaTime;
 
-            if (timeCounter <= 0)   // sprawdzamy czy minê³o opuŸnienie wystrza³u
+            if (timeCounter <= 0)   // sprawdzamy czy minê³o opóŸnienie wystrza³u
             {
                 timeCounter = shootDelay;
                 Shoot();    // strza³
